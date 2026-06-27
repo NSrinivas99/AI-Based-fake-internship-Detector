@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Fake Internship Detector — Job Analyzer{% endblock %}
+
+{% block content %}
+<div class="header-container">
+    <h2>🔍 Job Posting Analyzer</h2>
+    <p>Submit job descriptions to determine scam probability using advanced natural language processing.</p>
+</div>
+
+<div class="grid-2 mt-4">
+    <!-- Form Side -->
+    <div class="glass-card">
+        <h3>Submit Description</h3>
+        <div class="form-group">
+            <label for="company_name">Company Name (Optional)</label>
+            <input type="text" id="company_name" class="form-input" placeholder="e.g. Google, earn-easy-placements">
+        </div>
+        
+        <div class="form-group">
+            <label for="stipend">Monthly Stipend in ₹ (Optional)</label>
+            <input type="number" id="stipend" class="form-input" placeholder="e.g. 15000">
+        </div>
+
+        <div class="form-group">
+            <label for="description">Job / Internship Description</label>
+            <textarea id="description" class="form-textarea" placeholder="Paste the job or internship posting details here..."></textarea>
+        </div>
+
+        <button id="btn-analyze" onclick="analyzeInternship()" class="btn btn-primary w-100">
+            <span>🛡️ RUN SECURITY SCAN</span>
+        </button>
+    </div>
+
+    <!-- Live Report Side -->
+    <div class="glass-card">
+        <h3>Security Scan Report</h3>
+        <div id="result-placeholder" class="report-empty">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="48" height="48">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <p>Paste the details and click "Run Security Scan" to populate real-time threat intelligence.</p>
+        </div>
+
+        <div id="analysis-results" class="hidden">
+            <div class="verdict-banner-container">
+                <div id="verdict-badge" class="verdict-badge">VERDICT: ...</div>
+                <div class="gauge-wrapper">
+                    <div id="gauge-risk" class="custom-gauge" style="--value: 0;">
+                        <span id="gauge-text" class="gauge-value">0%</span>
+                    </div>
+                    <span class="gauge-label">SCAM PROBABILITY</span>
+                </div>
+            </div>
+
+            <div class="report-section mt-4">
+                <h4>🎛️ Composite Scam Score</h4>
+                <div class="progress-bar-container">
+                    <div id="scam-score-bar" class="progress-bar" style="width: 0%;"></div>
+                </div>
+                <div class="flex-between">
+                    <span class="text-secondary font-mono">0.0 (SAFE)</span>
+                    <span id="scam-score-text" class="font-mono text-cyan">0.00</span>
+                    <span class="text-secondary font-mono">100.0 (SCAM)</span>
+                </div>
+            </div>
+
+            <div class="report-section mt-4">
+                <h4>💵 Stipend Realism Verification</h4>
+                <p id="stipend-status" class="text-secondary">Analyzing stipend metrics...</p>
+            </div>
+
+            <div class="report-section mt-4">
+                <h4>🔴 Keyword Obfuscation Detection</h4>
+                <div id="highlighted-container" class="highlighted-block"></div>
+                <div id="keyword-pills-container" class="pills-container mt-2"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

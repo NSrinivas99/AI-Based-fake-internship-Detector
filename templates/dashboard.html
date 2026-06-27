@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Fake Internship Detector — Scam Analytics Dashboard{% endblock %}
+
+{% block content %}
+<div class="header-container">
+    <h2>📈 Scam Analytics Dashboard</h2>
+    <p>Real-time threat intelligence aggregate of internship verification activities, detected trends, and scam methods.</p>
+</div>
+
+<!-- Stats counter row -->
+<div class="grid-4 mt-4">
+    <div class="stat-card border-cyan">
+        <div class="stat-content">
+            <h3 id="dash-total" class="stat-number">...</h3>
+            <p class="stat-label">TOTAL SCANS INSTIGATED</p>
+        </div>
+    </div>
+    
+    <div class="stat-card border-danger">
+        <div class="stat-content">
+            <h3 id="dash-scams" class="stat-number">...</h3>
+            <p class="stat-label">SCAM THREATS DETECTED</p>
+        </div>
+    </div>
+
+    <div class="stat-card border-success">
+        <div class="stat-content">
+            <h3 id="dash-genuine" class="stat-number">...</h3>
+            <p class="stat-label">GENUINE JOB DETECTIONS</p>
+        </div>
+    </div>
+
+    <div class="stat-card border-warning">
+        <div class="stat-content">
+            <h3 id="dash-percent" class="stat-number">...</h3>
+            <p class="stat-label">SCAM PERCENTAGE RATE</p>
+        </div>
+    </div>
+</div>
+
+<!-- Charts section -->
+<div class="grid-2 mt-4">
+    <div class="glass-card">
+        <h3>📈 Recent Scam Threat Score Trends</h3>
+        <div class="chart-container">
+            <canvas id="trend-chart"></canvas>
+        </div>
+    </div>
+
+    <div class="glass-card">
+        <h3>⚖️ Legitimacy Distribution (Fake vs Genuine)</h3>
+        <div class="chart-container">
+            <canvas id="distribution-chart"></canvas>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- History log table -->
+<div class="glass-card mt-4">
+    <h3>📜 System Security Log (Recent 20 Checks)</h3>
+    <div class="table-container mt-2">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>TIMESTAMP</th>
+                    <th>DETECTION SOURCE</th>
+                    <th>EMPLOYER / SENDER</th>
+                    <th>THREAT STATUS</th>
+                    <th>CONFIDENCE</th>
+                    <th>COMPOSITE SCORE</th>
+                </tr>
+            </thead>
+            <tbody id="recent-checks-tbody">
+                <tr>
+                    <td colspan="6" class="text-center text-secondary">Querying security system logs...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        loadDashboard();
+    });
+</script>
+{% endblock %}

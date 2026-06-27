@@ -1,0 +1,412 @@
+{% extends "base.html" %}
+
+{% block title %}Fake Internship Detector — Message Scanner{% endblock %}
+
+{% block content %}
+<div class="header-container">
+    <h2>📱 Message Scanner</h2>
+    <p>Paste a suspicious job offer message to analyze it for scam signals — including linked websites and company verification.</p>
+</div>
+
+<div class="grid-2 mt-4">
+    <!-- ── Input Side ── -->
+    <div class="glass-card">
+        <h3>Paste Offer Message</h3>
+        <label class="form-label mt-2">Where did you receive this message?</label>
+        <div class="platform-selector mb-3" style="flex-wrap:wrap; gap:0.4rem;">
+            <button class="platform-btn active" id="plat-whatsapp" onclick="selectPlatform('whatsapp', this)">
+                <svg fill="currentColor" viewBox="0 0 24 24" width="14" height="14"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.625 1.451 5.403.002 9.803-4.386 9.805-9.778.002-2.612-1.013-5.07-2.86-6.92C16.371 2.057 13.91 1.04 11.298 1.04c-5.41 0-9.81 4.389-9.813 9.783-.001 1.77.469 3.5 1.36 5.025l-.955 3.49 3.577-.938zm12.753-7.502c-.287-.143-1.696-.837-1.959-.933-.262-.096-.453-.143-.644.143-.191.286-.74.933-.907 1.124-.167.19-.334.214-.621.071-1.312-.656-2.274-1.15-3.08-2.527-.214-.367-.067-.584.072-.733.14-.148.287-.333.43-.5.143-.166.19-.285.286-.476.095-.19.047-.357-.024-.5-.071-.143-.644-1.547-.882-2.118-.23-.556-.484-.482-.663-.491-.17-.008-.367-.01-.564-.01-.198 0-.52.074-.792.368-.272.295-1.04 1.016-1.04 2.478 0 1.462 1.064 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.695-.69 1.934-1.357.238-.667.238-1.238.167-1.357-.071-.12-.262-.19-.55-.333z" /></svg>
+                <span>WhatsApp</span>
+            </button>
+            <button class="platform-btn" id="plat-telegram" onclick="selectPlatform('telegram', this)">
+                <svg fill="currentColor" viewBox="0 0 24 24" width="14" height="14"><path d="M11.944 0C5.352 0 0 5.352 0 11.944 0 18.536 5.352 24 11.944 24c6.592 0 11.944-5.352 11.944-11.944C23.888 5.352 18.536 0 11.944 0zm5.82 8.04c-.168.966-3.138 13.068-3.294 13.884-.078.402-.228.534-.372.546-.312.03-.546-.204-.846-.402-1.74-1.14-2.73-1.848-4.416-2.958-1.95-1.284-.684-1.986.426-3.138.288-.306 5.328-4.884 5.43-5.31.012-.054.024-.258-.096-.366-.12-.108-.294-.072-.42-.042-.18.042-3.054 1.938-8.616 5.694-.816.558-1.554.834-2.22.822-.732-.012-2.142-.408-3.192-.75-.129-.426.966-1.59 1.938-2.586C6.69 10.98 9.384 9.15 12.012 8.166c4.686-1.746 5.658-2.052 6.294-2.064.138-.006.45.03.654.198.174.144.222.336.228.48.012.18-.012.66-.024 1.26z" /></svg>
+                <span>Telegram</span>
+            </button>
+            <button class="platform-btn" id="plat-instagram" onclick="selectPlatform('instagram', this)">
+                <span>📸 Instagram</span>
+            </button>
+            <button class="platform-btn" id="plat-sms" onclick="selectPlatform('sms', this)">
+                <span>📱 SMS</span>
+            </button>
+            <button class="platform-btn" id="plat-email" onclick="selectPlatform('email', this)">
+                <span>📧 Email</span>
+            </button>
+            <button class="platform-btn" id="plat-internshala" onclick="selectPlatform('internshala', this)">
+                <span>🎓 Internshala</span>
+            </button>
+            <button class="platform-btn" id="plat-linkedin" onclick="selectPlatform('linkedin', this)">
+                <span>💼 LinkedIn</span>
+            </button>
+            <button class="platform-btn" id="plat-other" onclick="selectPlatform('other', this)">
+                <span>🔗 Other</span>
+            </button>
+        </div>
+
+        <div class="form-group">
+            <textarea id="message-text" class="form-textarea" rows="8"
+                placeholder="Paste the forwarded message you received..."></textarea>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+            <button id="btn-scan" onclick="scanMessage()" class="btn btn-primary" style="flex:1; min-width:140px;">
+                <span>🛡️ Quick Scan</span>
+            </button>
+            <button id="btn-deep-scan" onclick="deepScanMessage()" class="btn btn-deep" style="flex:1; min-width:140px;">
+                <span>🔬 Deep Scan</span>
+            </button>
+        </div>
+
+        <div class="mt-4">
+            <h4 style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.5rem;">Sample Messages</h4>
+            <div class="sample-scams">
+                <button class="sample-btn" onclick="fillSample(1)">💬 WhatsApp Scam Offer</button>
+                <button class="sample-btn" onclick="fillSample(2)">💎 Telegram Crypto Scam</button>
+                <button class="sample-btn" onclick="fillSample(3)">✅ Genuine TCS Internship</button>
+                <button class="sample-btn" onclick="fillSample(4)">🔍 Deep Scan Demo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Results Side ── -->
+    <div class="glass-card">
+        <h3>Threat Assessment</h3>
+
+        <!-- Placeholder -->
+        <div id="result-placeholder" class="report-empty">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="48" height="48" style="opacity:0.3; margin-bottom:1rem;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p style="color:var(--text-muted);">Select platform, paste content, and initiate scan.</p>
+        </div>
+
+        <!-- Quick Scan Results -->
+        <div id="message-results" class="hidden">
+            <div class="verdict-banner-container">
+                <div id="verdict-badge" class="verdict-badge">VERDICT: ...</div>
+                <div class="gauge-wrapper">
+                    <div id="gauge-risk" class="custom-gauge" style="--value: 0;">
+                        <span id="gauge-text" class="gauge-value">0%</span>
+                    </div>
+                    <span class="gauge-label">SCAM SCORE</span>
+                </div>
+            </div>
+
+            <!-- ML Probability bar -->
+            <div class="report-section mt-3">
+                <h4>🤖 AI Classifier</h4>
+                <div class="flex-between mb-1">
+                    <span class="text-success small font-mono">GENUINE: <span id="ml-genuine-pct">0%</span></span>
+                    <span class="text-danger small font-mono">FAKE: <span id="ml-fake-pct">0%</span></span>
+                </div>
+                <div class="progress-bar-container double-bar">
+                    <div id="ml-genuine-bar" class="progress-bar bg-success" style="width: 50%;"></div>
+                    <div id="ml-fake-bar" class="progress-bar bg-danger" style="width: 50%;"></div>
+                </div>
+            </div>
+
+            <!-- Message Preview -->
+            <div class="report-section mt-4">
+                <h4>📜 Highlighted Message</h4>
+                <div id="platform-bubble" class="message-bubble message-whatsapp">
+                    <div id="highlighted-message" class="bubble-content font-mono"></div>
+                </div>
+            </div>
+
+            <!-- Indicators -->
+            <div class="report-section mt-4">
+                <h4>🚩 Risk Indicators</h4>
+                <ul id="indicators-list" class="indicators-list"></ul>
+            </div>
+
+            <!-- Safety Tips -->
+            <div class="report-section mt-4">
+                <h4>ℹ️ Recommended Actions</h4>
+                <ul id="safety-tips-list" class="safety-tips-list"></ul>
+            </div>
+        </div>
+
+        <!-- Deep Scan Loading Steps -->
+        <div id="deep-scan-loading" class="hidden">
+            <div class="scan-steps" id="scan-steps-list">
+                <div class="scan-step" id="step-1"><span class="step-dot"></span> Analyzing message keywords & patterns</div>
+                <div class="scan-step" id="step-2"><span class="step-dot"></span> Visiting linked websites...</div>
+                <div class="scan-step" id="step-3"><span class="step-dot"></span> Extracting job description from pages</div>
+                <div class="scan-step" id="step-4"><span class="step-dot"></span> Checking LinkedIn & company profiles</div>
+                <div class="scan-step" id="step-5"><span class="step-dot"></span> Running AI classifier on all content</div>
+                <div class="scan-step" id="step-6"><span class="step-dot"></span> Generating threat report</div>
+            </div>
+        </div>
+
+        <!-- Deep Scan Results -->
+        <div id="deep-scan-results" class="hidden">
+            <!-- Verdict -->
+            <div class="verdict-banner-container">
+                <div id="deep-verdict-badge" class="verdict-badge">DEEP VERDICT: ...</div>
+                <div class="gauge-wrapper">
+                    <div id="deep-gauge-risk" class="custom-gauge" style="--value: 0;">
+                        <span id="deep-gauge-text" class="gauge-value">0%</span>
+                    </div>
+                    <span class="gauge-label">DEEP SCORE</span>
+                </div>
+            </div>
+
+            <!-- Message Preview -->
+            <div class="report-section mt-3">
+                <h4>📜 Message Analysis</h4>
+                <div id="deep-platform-bubble" class="message-bubble message-whatsapp">
+                    <div id="deep-highlighted-message" class="bubble-content font-mono"></div>
+                </div>
+            </div>
+
+            <!-- Website Analysis Panel -->
+            <div class="deep-scan-panel" id="panel-websites">
+                <h4>🌐 Website Analysis</h4>
+                <div id="website-results-list"></div>
+            </div>
+
+            <!-- LinkedIn & Company Panel -->
+            <div class="deep-scan-panel" id="panel-linkedin">
+                <h4>💼 LinkedIn & Company Verification</h4>
+                <div id="linkedin-results-list"></div>
+            </div>
+
+            <!-- Indicators -->
+            <div class="report-section mt-4">
+                <h4>🚩 Risk Indicators</h4>
+                <ul id="deep-indicators-list" class="indicators-list"></ul>
+            </div>
+
+            <!-- Tips -->
+            <div class="report-section mt-4">
+                <h4>ℹ️ Recommended Actions</h4>
+                <ul id="deep-safety-tips-list" class="safety-tips-list"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const SAMPLES = {
+        1: `🔔 URGENT HIRING: Earn up to ₹5,000 daily from home! Easy copy-paste tasks using your mobile. No skills or interview required. One-time processing fee of ₹1,200 is fully refundable after your first task. Limited seats remaining! Contact HR on WhatsApp link: http://bit.ly/fakejobhr`,
+        2: `⚡️ CRYPTO TRADING INTERNSHIP ⚡️
+Get guaranteed ₹80,000 stipend. Simple tasks: join our Telegram group, follow trades, and buy tokens. Deposit a security amount of ₹5,000. Start today immediately! Register here at: http://scam-crypto-academy.xyz`,
+        3: `Internship Opportunity at TCS: We are hiring Software Engineering Interns for our Bangalore office. Requirements: Proficiency in Java or Python, basic data structures knowledge. Stipend: ₹15,000/month. Apply through our official portal: https://www.tcs.com/careers`,
+        4: `Exciting opportunity at Infosys Technologies! We are offering a 3-month internship in Data Science. Stipend: ₹20,000/month. No registration fee. Apply at: https://www.infosys.com/careers. LinkedIn: https://www.linkedin.com/company/infosys`
+    };
+
+    function fillSample(id) {
+        document.getElementById('message-text').value = SAMPLES[id];
+        showToast('Sample loaded — click Quick Scan or Deep Scan!', 'info');
+    }
+
+    // ── Deep Scan Step Animation ──────────────────────────────
+    let stepTimer = null;
+    function animateSteps() {
+        const steps = [1,2,3,4,5,6];
+        let i = 0;
+        steps.forEach(s => {
+            const el = document.getElementById('step-' + s);
+            if (el) el.className = 'scan-step';
+        });
+        stepTimer = setInterval(() => {
+            if (i > 0) {
+                const prev = document.getElementById('step-' + i);
+                if (prev) prev.className = 'scan-step done';
+            }
+            i++;
+            if (i <= steps.length) {
+                const curr = document.getElementById('step-' + i);
+                if (curr) curr.className = 'scan-step active';
+            } else {
+                clearInterval(stepTimer);
+            }
+        }, 1800);
+    }
+
+    // ── Deep Scan ─────────────────────────────────────────────
+    async function deepScanMessage() {
+        const text = document.getElementById('message-text').value;
+        if (!text || text.trim() === '') {
+            showToast('Please paste a message first.', 'warning');
+            return;
+        }
+
+        // Show loading
+        document.getElementById('result-placeholder').classList.add('hidden');
+        document.getElementById('message-results').classList.add('hidden');
+        document.getElementById('deep-scan-results').classList.add('hidden');
+        document.getElementById('deep-scan-loading').classList.remove('hidden');
+        animateSteps();
+
+        setBtnLoading('btn-deep-scan', true);
+
+        try {
+            const res = await fetch('/api/deep-scan-message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text, platform: activePlatform })
+            });
+
+            const data = await res.json();
+            clearInterval(stepTimer);
+
+            if (res.status >= 400) {
+                showToast(data.error || 'Deep scan failed', 'danger');
+                document.getElementById('deep-scan-loading').classList.add('hidden');
+                document.getElementById('result-placeholder').classList.remove('hidden');
+                return;
+            }
+
+            // Hide loading, show results
+            document.getElementById('deep-scan-loading').classList.add('hidden');
+            document.getElementById('deep-scan-results').classList.remove('hidden');
+
+            // ── Deep Verdict Badge ──
+            const deepBadge = document.getElementById('deep-verdict-badge');
+            deepBadge.innerText = `DEEP VERDICT: ${data.deep_verdict}`;
+            deepBadge.className = 'verdict-badge';
+            if (data.deep_scam_score >= 70) {
+                deepBadge.classList.add('bg-danger');
+                showToast('High Risk Detected — Multiple signals confirmed.', 'danger');
+            } else if (data.deep_scam_score >= 40) {
+                deepBadge.classList.add('bg-warning');
+                showToast('Suspicious signals found — verify carefully.', 'warning');
+            } else {
+                deepBadge.classList.add('bg-success');
+                showToast('Deep scan complete — appears legitimate.', 'success');
+            }
+
+            updateGauge('deep-gauge-risk', data.deep_scam_score);
+
+            // ── Highlighted Message ──
+            const bubble = document.getElementById('deep-platform-bubble');
+            bubble.className = `message-bubble message-${activePlatform}`;
+            document.getElementById('deep-highlighted-message').innerHTML = data.highlighted_message || text;
+
+            // ── Website Analysis ──
+            const websiteList = document.getElementById('website-results-list');
+            websiteList.innerHTML = '';
+            if (!data.website_results || data.website_results.length === 0) {
+                websiteList.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem;">No URLs found in the message.</p>';
+            } else {
+                data.website_results.forEach(site => {
+                    const verdictClass = site.site_verdict || 'warn';
+                    const verdictEmoji = verdictClass === 'safe' ? '✅ Safe' : verdictClass === 'danger' ? '🚨 High Risk' : '⚠️ Suspicious';
+                    const kwCount = site.keyword_hits ? site.keyword_hits.length : 0;
+                    const stipendHtml = site.extracted_stipend ? `<span style="font-size:0.78rem; color:var(--warning);">💰 ${site.extracted_stipend}</span>` : '';
+                    const mlHtml = site.ml_fake_prob != null
+                        ? `<div style="margin-top:0.5rem; font-size:0.78rem; color:var(--text-secondary);">🤖 AI Fake Probability: <strong style="color:${site.ml_fake_prob > 50 ? 'var(--danger)' : 'var(--success)'};">${site.ml_fake_prob}%</strong></div>`
+                        : '';
+
+                    websiteList.innerHTML += `
+                        <div class="ds-site-card">
+                            <div class="ds-url">${escapeHtml(site.url)}</div>
+                            ${site.load_success ? `
+                                <div class="ds-title">${escapeHtml(site.title || 'Untitled Page')}</div>
+                                ${site.meta_description ? `<div style="font-size:0.78rem; color:var(--text-secondary); margin-bottom:0.3rem;">${escapeHtml(site.meta_description)}</div>` : ''}
+                                ${stipendHtml}
+                                <div style="font-size:0.78rem; color:var(--text-secondary); margin-top:0.4rem;">
+                                    📄 ${site.word_count} words · 🚩 ${kwCount} scam keyword${kwCount !== 1 ? 's' : ''} detected
+                                </div>
+                                ${mlHtml}
+                                <span class="ds-verdict ${verdictClass}">${verdictEmoji}</span>
+                            ` : `
+                                <div style="color:var(--text-muted); font-size:0.82rem;">⚠️ Could not load page: ${escapeHtml(site.error || 'unreachable')}</div>
+                                <span class="ds-verdict warn">⚠️ Unverified</span>
+                            `}
+                        </div>
+                    `;
+                });
+            }
+
+            // ── LinkedIn & Company Panel ──
+            const liList = document.getElementById('linkedin-results-list');
+            liList.innerHTML = '';
+            const li = data.linkedin_check || {};
+
+            if (li.linkedin_urls_found && li.linkedin_urls_found.length > 0) {
+                li.linkedin_urls_found.forEach(url => {
+                    liList.innerHTML += `
+                        <div class="ds-linkedin-card">
+                            <div class="li-icon">in</div>
+                            <div class="li-info">
+                                <div class="li-name">LinkedIn URL Found</div>
+                                <div class="li-detail" style="color:var(--accent);">${escapeHtml(url)}</div>
+                            </div>
+                        </div>`;
+                });
+            }
+
+            if (li.company_checks && li.company_checks.length > 0) {
+                li.company_checks.forEach(cc => {
+                    const trustColor = cc.trust_score >= 70 ? 'var(--success)' : cc.trust_score >= 40 ? 'var(--warning)' : 'var(--danger)';
+                    const websiteIcon = cc.website_exists ? '✅' : '❌';
+                    const linkedinIcon = cc.linkedin_exists ? '✅' : '❌';
+                    liList.innerHTML += `
+                        <div class="ds-linkedin-card">
+                            <div class="li-icon" style="background: linear-gradient(135deg, var(--primary), #8b5cf6);">🏢</div>
+                            <div class="li-info" style="flex:1;">
+                                <div class="li-name">${escapeHtml(cc.company_name)}</div>
+                                <div class="li-detail">
+                                    Trust Score: <strong style="color:${trustColor};">${cc.trust_score}/100</strong> &nbsp;|&nbsp;
+                                    Website: ${websiteIcon} &nbsp;|&nbsp; LinkedIn: ${linkedinIcon}
+                                </div>
+                                <div class="li-detail" style="margin-top:0.25rem;">${escapeHtml(cc.verdict)}</div>
+                            </div>
+                        </div>`;
+                });
+            }
+
+            if ((!li.linkedin_urls_found || li.linkedin_urls_found.length === 0) &&
+                (!li.company_checks || li.company_checks.length === 0)) {
+                liList.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem;">No company names or LinkedIn links found in message.</p>';
+            }
+
+            // ── Indicators ──
+            const indList = document.getElementById('deep-indicators-list');
+            indList.innerHTML = '';
+            if (!data.indicators || data.indicators.length === 0) {
+                indList.innerHTML = '<li style="color:var(--text-muted); font-size:0.85rem;">No distinct threat indicators flagged.</li>';
+            } else {
+                data.indicators.forEach(ind => {
+                    const li2 = document.createElement('li');
+                    li2.className = 'indicator-item';
+                    li2.innerHTML = `<span class="indicator-bullet-danger">🚩</span><span class="indicator-text">${escapeHtml(ind.detail)}</span>`;
+                    indList.appendChild(li2);
+                });
+            }
+
+            // ── Safety Tips ──
+            const tipsList = document.getElementById('deep-safety-tips-list');
+            tipsList.innerHTML = '';
+            (data.safety_tips || []).forEach(tip => {
+                const li3 = document.createElement('li');
+                li3.className = 'tip-item';
+                li3.innerHTML = `<span class="tip-bullet">✓</span><span class="tip-text">${escapeHtml(tip)}</span>`;
+                tipsList.appendChild(li3);
+            });
+
+        } catch (e) {
+            clearInterval(stepTimer);
+            console.error(e);
+            showToast('Deep scan failed — check connection.', 'danger');
+            document.getElementById('deep-scan-loading').classList.add('hidden');
+            document.getElementById('result-placeholder').classList.remove('hidden');
+        } finally {
+            setBtnLoading('btn-deep-scan', false);
+        }
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+</script>
+{% endblock %}

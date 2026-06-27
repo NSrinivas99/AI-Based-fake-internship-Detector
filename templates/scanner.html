@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Fake Internship Detector — Website URL Scanner{% endblock %}
+
+{% block content %}
+<div class="header-container">
+    <h2>🌐 Website URL Scanner</h2>
+    <p>Scan job application links or company domain URLs to check for security vulnerabilities and malicious domain structures.</p>
+</div>
+
+<div class="grid-2 mt-4">
+    <!-- Input Form -->
+    <div class="glass-card">
+        <h3>Scan Link / Website</h3>
+        <div class="form-group">
+            <label for="scan-url">Application URL</label>
+            <input type="url" id="scan-url" class="form-input" placeholder="e.g. https://www.example-internships.com/apply">
+        </div>
+        
+        <button id="btn-scan" onclick="scanURL()" class="btn btn-primary w-100">
+            <span>🛡️ START WEB SCAN</span>
+        </button>
+    </div>
+
+    <!-- Live Results -->
+    <div class="glass-card">
+        <h3>Link Security Report</h3>
+        <div id="result-placeholder" class="report-empty">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="48" height="48">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 009 11c0-1.28-.154-2.524-.444-3.71m0 0a3 3 0 01-5.657-1.422m5.658 1.422L4 4m6 16V4m6 16V4m6 16v-6a3 3 0 00-3-3V9m3 11H3" />
+            </svg>
+            <p>Paste the URL and click "Start Web Scan" to inspect connection SSL and identify domain indicators.</p>
+        </div>
+
+        <div id="url-results" class="hidden">
+            <div class="verdict-banner-container flex-between align-center p-3 border-radius-sm mb-3" id="url-verdict-banner">
+                <h3 id="url-verdict-title" class="margin-none">VERDICT: ...</h3>
+                <span id="url-verdict-badge" class="badge">UNKNOWN</span>
+            </div>
+
+            <div class="report-section mt-4">
+                <h4>✓ URL Risk Factors Checklist</h4>
+                <ul class="checklist-items">
+                    <li id="chk-ssl" class="checklist-item">
+                        <span class="chk-status"></span>
+                        <span class="chk-text">SSL / HTTPS Secure Connection</span>
+                    </li>
+                    <li id="chk-ip" class="checklist-item">
+                        <span class="chk-status"></span>
+                        <span class="chk-text">No Raw IP Address in URL</span>
+                    </li>
+                    <li id="chk-tld" class="checklist-item">
+                        <span class="chk-status"></span>
+                        <span class="chk-text">Safe Top-Level Domain (TLD) Check</span>
+                    </li>
+                    <li id="chk-subdomain" class="checklist-item">
+                        <span class="chk-status"></span>
+                        <span class="chk-text">Subdomain Depth Analysis</span>
+                    </li>
+                    <li id="chk-length" class="checklist-item">
+                        <span class="chk-status"></span>
+                        <span class="chk-text">Length Normalization Check</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="report-section mt-4">
+                <h4>🏢 Scan Diagnostics</h4>
+                <p id="url-details-text" class="font-mono text-secondary small bg-dark-section p-3 border-radius-sm"></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

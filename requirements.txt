@@ -1,0 +1,9 @@
+flask==3.1.1
+scikit-learn==1.6.1
+pandas==2.2.3
+numpy==2.2.6
+beautifulsoup4==4.13.4
+requests==2.32.3
+joblib==1.5.1
+nltk==3.9.1
+python-whois==0.9.5

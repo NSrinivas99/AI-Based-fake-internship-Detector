@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Fake Internship Detector — About Project{% endblock %}
+
+{% block content %}
+<div class="header-container">
+    <h2>ℹ️ About Fake Internship Detector</h2>
+    <p>System details, machine learning pipeline, heuristics engine, and final year project documentation.</p>
+</div>
+
+<div class="glass-card mt-4">
+    <h3>🛡️ Project Objective</h3>
+    <p>College students and freshers frequently fall victim to recruitment scams on chat applications like WhatsApp and Telegram, or through fraudulent clone websites. These scams often request "security deposits", "registration fees", or attempt to harvest private personal data.</p>
+    <p class="mt-2">This system provides an integrated defense mechanism to screen job offers through four separate vectors: Natural Language Processing, suspicious keywords analysis, company legitimacy checks, and domain SSL scans.</p>
+</div>
+
+<div class="grid-2 mt-4">
+    <div class="glass-card">
+        <h3>🤖 NLP and Machine Learning Architecture</h3>
+        <p>The classifier is trained on a synthetic dataset containing 1,000 postings (500 genuine and 500 fake/scam offers). The pipeline runs as follows:</p>
+        <ul class="style-list mt-2">
+            <li><strong>Preprocessing:</strong> Text strings are lowercased, punctuation and special symbols are removed, and the remaining tokens are filtered against standard NLTK stopwords.</li>
+            <li><strong>TF-IDF Vectorization:</strong> Converts clean text tokens into numerical vectors using term frequency-inverse document frequency weighting with an ngram range of (1,2) to capture word pairings.</li>
+            <li><strong>Classifiers:</strong> The system trains both Logistic Regression and Random Forest models, picking the one with the highest F1-score as the active defense model.</li>
+        </ul>
+    </div>
+
+    <div class="glass-card">
+        <h3>📊 Risk Weighting & Scoring Engine</h3>
+        <p>The system calculates a composite risk index (0 to 100) using a multi-factor weighted equation:</p>
+        <table class="data-table simple-table mt-2">
+            <thead>
+                <tr>
+                    <th>ANALYSIS FACTOR</th>
+                    <th>WEIGHT</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Machine Learning Model Prediction</td>
+                    <td>40%</td>
+                </tr>
+                <tr>
+                    <td>Keyword Analysis</td>
+                    <td>25%</td>
+                </tr>
+                <tr>
+                    <td>Stipend Realism</td>
+                    <td>15%</td>
+                </tr>
+                <tr>
+                    <td>Company Legitimacy</td>
+                    <td>10%</td>
+                </tr>
+                <tr>
+                    <td>URL Safety</td>
+                    <td>10%</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="glass-card mt-4">
+    <h3>🛠️ Core Technology Stack</h3>
+    <div class="pills-container mt-2">
+        <span class="badge badge-primary">Python 3.11</span>
+        <span class="badge badge-primary">Flask Web Framework</span>
+        <span class="badge badge-primary">scikit-learn (ML)</span>
+        <span class="badge badge-primary">NLTK (NLP Tokenizer)</span>
+        <span class="badge badge-primary">BeautifulSoup4 & Requests</span>
+        <span class="badge badge-primary">SQLite3 Database</span>
+        <span class="badge badge-primary">Pandas & NumPy</span>
+        <span class="badge badge-primary">Chart.js (Visual Analytics)</span>
+        <span class="badge badge-primary">Vanilla CSS Grid & Flexbox</span>
+    </div>
+</div>
+{% endblock %}

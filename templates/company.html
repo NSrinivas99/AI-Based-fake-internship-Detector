@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Fake Internship Detector — Company Verifier{% endblock %}
+
+{% block content %}
+<div class="header-container">
+    <h2>🏢 Company Legitimacy Checker</h2>
+    <p>Analyze company background details to verify existence, LinkedIn registrations, domain age, and profile trust score.</p>
+</div>
+
+<div class="grid-2 mt-4">
+    <!-- Input Form -->
+    <div class="glass-card">
+        <h3>Verify Employer</h3>
+        <div class="form-group">
+            <label for="company-name">Company / Organization Name</label>
+            <input type="text" id="company-name" class="form-input" placeholder="e.g. Tata Consultancy Services, EarnEasyOnline">
+        </div>
+        
+        <button id="btn-verify" onclick="checkCompany()" class="btn btn-primary w-100">
+            <span>🛡️ START BACKGROUND CHECK</span>
+        </button>
+    </div>
+
+    <!-- Live Results -->
+    <div class="glass-card">
+        <h3>Verification Report</h3>
+        <div id="result-placeholder" class="report-empty">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="48" height="48">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+            <p>Enter the company name to run web query checks and calculate a legitimacy score.</p>
+        </div>
+
+        <div id="company-results" class="hidden">
+            <div class="verdict-banner-container">
+                <div id="verdict-badge" class="verdict-badge">VERDICT: ...</div>
+                <div class="gauge-wrapper">
+                    <div id="gauge-risk" class="custom-gauge" style="--value: 0;">
+                        <span id="gauge-text" class="gauge-value">0</span>
+                    </div>
+                    <span class="gauge-label">TRUST SCORE</span>
+                </div>
+            </div>
+
+            <div class="report-section mt-4">
+                <h4>✓ Verification Checklist</h4>
+                <ul class="checklist-items">
+                    <li id="chk-website" class="checklist-item">
+                        <span class="chk-status"></span>
+                        <span class="chk-text">Official Corporate Website Check</span>
+                    </li>
+                    <li id="chk-linkedin" class="checklist-item">
+                        <span class="chk-status"></span>
+                        <span class="chk-text">LinkedIn Company Page Directory Check</span>
+                    </li>
+                    <li id="chk-domain" class="checklist-item">
+                        <span class="chk-status"></span>
+                        <span class="chk-text">Domain Age Analysis</span>
+                    </li>
+                    <li id="chk-name" class="checklist-item">
+                        <span class="chk-status"></span>
+                        <span class="chk-text">Professional Name Heuristic</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="report-section mt-4">
+                <h4>🏢 Intelligence Details</h4>
+                <p id="company-details-text" class="font-mono text-secondary small bg-dark-section p-3 border-radius-sm"></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

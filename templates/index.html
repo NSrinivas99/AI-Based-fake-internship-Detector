@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+
+{% block title %}InternShield AI — Premium Internship Fraud Protection{% endblock %}
+
+{% block content %}
+<style>
+    .hero-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 4rem 1rem 6rem;
+        position: relative;
+    }
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: rgba(0, 246, 255, 0.1);
+        border: 1px solid var(--primary);
+        border-radius: 50px;
+        color: var(--primary);
+        font-weight: 600;
+        font-size: 0.85rem;
+        margin-bottom: 1.5rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        line-height: 1.1;
+        background: linear-gradient(135deg, #fff 30%, var(--primary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        max-width: 900px;
+    }
+    .hero-subtitle {
+        font-size: 1.25rem;
+        color: var(--text-secondary);
+        max-width: 700px;
+        margin-bottom: 3rem;
+        line-height: 1.6;
+    }
+    .hero-actions {
+        display: flex;
+        gap: 1.5rem;
+    }
+
+    /* Live Intelligence Ticker */
+    .threat-ticker {
+        width: 100%;
+        max-width: 1200px;
+        margin: -2rem auto 4rem;
+        background: var(--bg-surface-elevated);
+        border: 1px solid var(--border-glass);
+        border-radius: 12px;
+        padding: 1rem 2rem;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        overflow: hidden;
+    }
+    .ticker-label {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        color: var(--warning);
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .ticker-content {
+        display: flex;
+        gap: 3rem;
+        animation: tickerScroll 25s linear infinite;
+        white-space: nowrap;
+    }
+    .ticker-item {
+        color: var(--text-secondary);
+        font-family: var(--font-mono);
+        font-size: 0.9rem;
+    }
+    .ticker-item span {
+        color: var(--danger);
+        font-weight: bold;
+    }
+
+    @keyframes tickerScroll {
+        0% { transform: translateX(100%); }
+        100% { transform: translateX(-100%); }
+    }
+
+    .tools-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .tool-card {
+        padding: 2.5rem 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .tool-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        border-color: rgba(99, 102, 241, 0.4);
+    }
+    .tool-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid var(--border-glass);
+    }
+    .tool-card h4 {
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+        color: #fff;
+    }
+    .tool-card p {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
+        flex: 1;
+    }
+    .tool-card .btn {
+        width: 100%;
+    }
+
+    @media (max-width: 768px) {
+        .hero-title { font-size: 2.5rem; }
+        .hero-actions { flex-direction: column; width: 100%; }
+        .threat-ticker { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+</style>
+
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="hero-badge">
+        <span class="pulse-dot" style="width:8px; height:8px; background:var(--primary); border-radius:50%; box-shadow: 0 0 10px var(--primary);"></span>
+        InternShield AI v2.0 Live
+    </div>
+    <h1 class="hero-title">Enterprise-Grade Protection Against Internship Fraud.</h1>
+    <p class="hero-subtitle">Advanced machine learning and multi-vector threat intelligence to automatically detect, analyze, and neutralize fake job offers across WhatsApp, LinkedIn, and Email.</p>
+    
+    <div class="hero-actions">
+        <a href="{{ url_for('message_scanner') }}" class="btn btn-primary" style="padding: 1rem 2rem; font-size: 1.1rem;">
+            Run Deep Scan
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20" style="margin-left:0.5rem;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-deep" style="padding: 1rem 2rem; font-size: 1.1rem;">
+            View SOC Dashboard
+        </a>
+    </div>
+</div>
+
+<!-- Live Threat Ticker -->
+<div class="threat-ticker">
+    <div class="ticker-label">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+        THREAT INTEL
+    </div>
+    <div class="ticker-content">
+        <div class="ticker-item">New WhatsApp crypto scam detected <span>[HIGH RISK]</span></div>
+        <div class="ticker-item">Fake TCS registration portal blocked <span>[DOMAIN FLAGGED]</span></div>
+        <div class="ticker-item">Telegram "Task Master" fraud ring identified <span>[CRITICAL]</span></div>
+        <div class="ticker-item">Spoofed Infosys HR email campaign neutralized <span>[BLOCKED]</span></div>
+        <!-- Duplicate for seamless scroll -->
+        <div class="ticker-item">New WhatsApp crypto scam detected <span>[HIGH RISK]</span></div>
+        <div class="ticker-item">Fake TCS registration portal blocked <span>[DOMAIN FLAGGED]</span></div>
+    </div>
+</div>
+
+<!-- Core Capabilities -->
+<div style="max-width: 1200px; margin: 0 auto;">
+    <h3 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Core Capabilities</h3>
+    <p style="color: var(--text-secondary); margin-bottom: 2rem;">Select a module to begin security analysis.</p>
+
+    <div class="tools-grid">
+        <div class="tool-card glass-card">
+            <div class="tool-icon text-cyan">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="32" height="32"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+            </div>
+            <h4>Message Scanner</h4>
+            <p>Paste suspicious messages from WhatsApp, Telegram, or Email. Our ML engine detects fraud patterns, extracts URLs, and verifies company claims instantly.</p>
+            <a href="{{ url_for('message_scanner') }}" class="btn btn-deep">Launch Scanner</a>
+        </div>
+
+        <div class="tool-card glass-card">
+            <div class="tool-icon text-secondary">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="32" height="32"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            </div>
+            <h4>Job Analyzer</h4>
+            <p>Paste full job descriptions from Internshala or LinkedIn to evaluate language syntax, suspicious stipend requirements, and scam probability.</p>
+            <a href="{{ url_for('analyzer') }}" class="btn btn-deep">Launch Analyzer</a>
+        </div>
+
+        <div class="tool-card glass-card">
+            <div class="tool-icon text-warning">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="32" height="32"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+            </div>
+            <h4>Company Verifier</h4>
+            <p>Verify if a hiring company legally exists, has a legitimate domain history, and maintains an authentic LinkedIn corporate presence.</p>
+            <a href="{{ url_for('company_check') }}" class="btn btn-deep">Verify Company</a>
+        </div>
+
+        <div class="tool-card glass-card">
+            <div class="tool-icon text-danger">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="32" height="32"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+            </div>
+            <h4>Link Scanner</h4>
+            <p>Scan application URLs or external sites for SSL validation, typosquatting domains, malicious redirects, and IP-based links.</p>
+            <a href="{{ url_for('url_scanner') }}" class="btn btn-deep">Scan Link</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
