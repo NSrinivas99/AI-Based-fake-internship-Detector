@@ -17,16 +17,17 @@ from nltk.tokenize import word_tokenize
 # Import business logic helpers
 import utils
 
-# Download required NLTK resources
-#nltk.download("punkt", quiet=True)
-nltk.download("punkt_tab", quiet=True)
-nltk.download("stopwords", quiet=True)
+# Add local bundled NLTK data to path
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+nltk_data_dir = os.path.join(BASE_DIR, 'nltk_data')
+nltk.data.path.append(nltk_data_dir)
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
-DATABASE = 'database.db'
-MODEL_DIR = 'model'
+DATABASE = '/tmp/database.db'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_DIR = os.path.join(BASE_DIR, 'model')
 MODEL_PATH = os.path.join(MODEL_DIR, 'internship_model.pkl')
 TFIDF_PATH = os.path.join(MODEL_DIR, 'tfidf.pkl')
 
